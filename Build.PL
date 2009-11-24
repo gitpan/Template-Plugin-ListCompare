@@ -9,6 +9,7 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/Template/Plugin/ListCompare.pm',
 requires => {
 'List::Compare' => '0.37',
+'Template::Plugin' => 0,
 },
     build_requires => {
         'Test::More' => 0,

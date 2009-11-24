@@ -5,7 +5,7 @@ use warnings;
 use base qw/Template::Plugin List::Compare/;
 use List::Compare;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 sub new {
   my ($class, $context) = (shift, shift);
@@ -32,11 +32,11 @@ __END__
 
 =head1 NAME
 
-Template::Plugin::List::Compare - Compare the elements of 2 or more lists in a TT template
+Template::Plugin::ListCompare - Compare the elements of 2 or more lists in a TT template
 
 =head1 VERSION
 
-This is the POD documentation for the version 0.01 of Template::Plugin::List::Compare, written in November 24, 2009.
+This is the POD documentation for the version 0.02 of Template::Plugin::ListCompare, written in November 24, 2009.
 
 =head1 SYNOPSIS
 
