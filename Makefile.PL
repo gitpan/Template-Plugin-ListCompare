@@ -6,6 +6,9 @@ author   q{Octavian Rasnita <orasnita@gmail.com>};
 license  'perl';
 
 build_requires 'Test::More';
+requires 'Template::Plugin';
+requires 'List::Compare';
+
 
 auto_install;
 
