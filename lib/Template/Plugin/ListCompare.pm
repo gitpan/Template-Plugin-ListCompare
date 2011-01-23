@@ -5,26 +5,41 @@ use warnings;
 use base qw/Template::Plugin List::Compare/;
 use List::Compare;
 
-our $VERSION = 0.04;
+use 5.008_008;
+
+our $VERSION = 0.05;
 
 sub new {
-  my ($class, $context) = (shift, shift);
+    my @params  = @_;
+    my $class   = shift @params;
+    my $context = shift @params;
 
-  my ($unsorted, $accelerated);
-  $unsorted = shift if $_[0] eq '-u' or $_[0] eq '--unsorted';
-  $accelerated = shift if $_[0] eq '-a' or $_[0] eq '--accelerated';
+    my ( $unsorted, $accelerated );
 
-#Create arrayrefs from the scalar parameters:
-@_ = map {ref($_) eq "" ? [$_] : $_} @_;
+    if ( $params[0] eq '-u' or $params[0] eq '--unsorted' ) {
+        $unsorted = shift @params;
+    }
 
-  unshift(@_, $accelerated) if $accelerated;
-  unshift(@_, $unsorted) if $unsorted;
+    if ( $params[0] eq '-a' or $params[0] eq '--accelerated' ) {
+        $accelerated = shift @params;
+    }
 
-  my $self = List::Compare->new(@_);
-  return bless $self, $class;
+    #Create arrayrefs from the scalar parameters:
+    @params = map { ref($_) eq q{} ? [$_] : $_ } @params;
+
+    if ($accelerated) {
+        unshift @params, $accelerated;
+    }
+
+    if ($unsorted) {
+        unshift @params, $unsorted;
+    }
+
+    my $self = List::Compare->new(@params);
+    return bless $self, $class;
 }
 
-sub get_version {return $VERSION;}
+sub get_version { return $VERSION; }
 
 1;
 
@@ -36,7 +51,7 @@ Template::Plugin::ListCompare - Compare the elements of 2 or more lists in a TT 
 
 =head1 VERSION
 
-This is the POD documentation for the version 0.03 of Template::Plugin::ListCompare, written in November 25, 2009.
+This is the POD documentation for the version 0.05 of Template::Plugin::ListCompare, written in January 2011.
 
 =head1 SYNOPSIS
 
@@ -52,7 +67,7 @@ The bare essentials:
 
 ... and so forth.
 
-=head1 DISCUSSION:  Modes and Methods
+=head1 DESCRIPTION
 
 =head2 Regular Case:  Compare Two Lists
 
@@ -979,9 +994,9 @@ ListCompare objects where seen-hashes are used as arguments:
 
 =head1 PRINCIPLES
 
-ListCompare is a Template-Toolkit plugin that offers access to L<List::Compare> module. Even this POD documentation mirrors the documentation of List::Compare. (I hope all the methods work fine when used in a TT template.)
+ListCompare is a Template-Toolkit plugin that offers access to L<List::Compare|List::Compare> module. Even this POD documentation mirrors the documentation of List::Compare. (I hope all the methods work fine when used in a TT template.)
 
-=head1 FUNCTIONS
+=head1 SUBROUTINES/METHODS
 
 =over
 
@@ -991,19 +1006,33 @@ The object constructor C<new()> shouldn't be specified explicitly because it is 
 
 =item * get_version()
 
-The method get_version was overwritten for beeing able to provide the version of C<Template::Plugin::ListCompare> and not the version of underlying L<List::Compare>.
+The method get_version was overwritten for beeing able to provide the version of C<Template::Plugin::ListCompare> and not the version of underlying L<List::Compare|List::Compare>.
 
 =back
 
+=head1 DIAGNOSTICS
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+No configuration needed.
+
+=head1 DEPENDENCIES
+
+L<Template::Plugin|Template::Plugin>, L<List::Compare|List::Compare>
+
 =head1 SEE ALSO
 
-L<List::Compare>, L<Array::Utils>, L<Array::Compare>, L<List::Util>, L<Set::Scalar>, L<Set::Bag>, L<Set::Array>, L<Algorithm::Diff>
+L<List::Compare|List::Compare>, L<Array::Utils|Array::Utils>, L<Array::Compare|Array::Compare>, L<List::Util|List::Util>, L<Set::Scalar|Set::Scalar>, L<Set::Bag|Set::Bag>, L<Set::Array|Set::Array>, L<Algorithm::Diff|Algorithm::Diff>
+
+=head1 INCOMPATIBILITIES
+
+No known incompatibilities
 
 =head1 AUTHOR
 
 Octavian Rasnita, C<< <orasnita at gmail.com> >>
 
-=head1 BUGS
+=head1 BUGS AND LIMITATIONS
 
 Please report any bugs or feature requests to 
 C<bug-template-plugin-listcompare at rt.cpan.org>, or through the web interface at 
@@ -1040,7 +1069,7 @@ L<http://search.cpan.org/dist/Template-Plugin-ListCompare/>
 
 =back
 
-=head1 COPYRIGHT & LICENSE
+=head1 LICENSE AND COPYRIGHT
 
 Copyright 2009 Octavian Rasnita.
 
